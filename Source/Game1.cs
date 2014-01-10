@@ -49,8 +49,6 @@ namespace ControllerDirectionTest
 		/// </summary>
 		private PlayerIndex _player = PlayerIndex.One;
 
-		private DeadZoneType _thumbstick = DeadZoneType.Axial;
-
 		private bool _flipped = false;
 
 		DeadZoneSample Left { get; set; }
@@ -80,19 +78,6 @@ namespace ControllerDirectionTest
 
 			Left = new DeadZoneSample(new Vector2(512.0f, 256.0f), _controller.Thumbsticks.LeftThumbstick);
 			Right = new DeadZoneSample(new Vector2(768.0f, 256.0f), _controller.Thumbsticks.RightThumbstick);
-		}
-
-		/// <summary>
-		/// Allows the game to perform any initialization it needs to before starting to run.
-		/// This is where it can query for any required services and load any non-graphic
-		/// related content.  Calling base.Initialize will enumerate through any components
-		/// and initialize them as well.
-		/// </summary>
-		protected override void Initialize()
-		{
-			// TODO: Add your initialization logic here
-
-			base.Initialize();
 		}
 
 		/// <summary>
@@ -148,12 +133,13 @@ namespace ControllerDirectionTest
 			//check if the player wants to switch between scrubbed/powercurve
 			if (CheckKeyDown(m_Input, Keys.W))
 			{
-				_thumbstick++;
-				if (_thumbstick > DeadZoneType.PowerCurve)
+				DeadZoneType thumbstick = _controller.Thumbsticks.ThumbstickScrubbing;
+				thumbstick++;
+				if (thumbstick > DeadZoneType.PowerCurve)
 				{
-					_thumbstick = DeadZoneType.Axial;
+					thumbstick = DeadZoneType.Axial;
 				}
-				_controller.Thumbsticks.ThumbstickScrubbing = _thumbstick;
+				_controller.Thumbsticks.ThumbstickScrubbing = thumbstick;
 			}
 
 			base.Update(gameTime);
@@ -184,7 +170,7 @@ namespace ControllerDirectionTest
 			position.Y += _text.Font.LineSpacing;
 
 			//say what type of thumbstick scrubbing we are doing
-			_text.Write("Thumbstick type: " + _thumbstick.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch);
+			_text.Write("Thumbstick type: " + _controller.Thumbsticks.ThumbstickScrubbing.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch);
 			position.Y += _text.Font.LineSpacing;
 
 			//what direction is the player facing
@@ -200,15 +186,8 @@ namespace ControllerDirectionTest
 			position.Y += _text.Font.LineSpacing;
 			WriteKeyStroke(EKeystroke.Back, position);
 			position.Y += _text.Font.LineSpacing * 2;
-
-			WriteKeyStroke(EKeystroke.UpRelease, position);
+			WriteKeyStroke(EKeystroke.Neutral, position);
 			position.Y += _text.Font.LineSpacing;
-			WriteKeyStroke(EKeystroke.DownRelease, position);
-			position.Y += _text.Font.LineSpacing;
-			WriteKeyStroke(EKeystroke.ForwardRelease, position);
-			position.Y += _text.Font.LineSpacing;
-			WriteKeyStroke(EKeystroke.BackRelease, position);
-			position.Y += _text.Font.LineSpacing * 2;
 
 			//write the dot product of the two thumbsticks
 			_text.Write("dot product: " + Vector2.Dot(Left.ThumbStick.Direction, Right.ThumbStick.Direction).ToString(),
