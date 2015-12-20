@@ -48,6 +48,8 @@ namespace ControllerDirectionTest
 
 		DeadZoneSample Right { get; set; }
 
+		GameClock _time;
+
 		#endregion //Members
 
 		#region Methods
@@ -71,6 +73,8 @@ namespace ControllerDirectionTest
 
 			Left = new DeadZoneSample(new Vector2(512.0f, 256.0f), _controller.Thumbsticks.LeftThumbstick);
 			Right = new DeadZoneSample(new Vector2(768.0f, 256.0f), _controller.Thumbsticks.RightThumbstick);
+
+			_time = new GameClock();
 		}
 
 		/// <summary>
@@ -114,6 +118,7 @@ namespace ControllerDirectionTest
 			}
 
 			//Update the controller
+			_time.Update(gameTime);
 			m_Input.Update();
 			_controller.Update(m_Input);
 
@@ -151,23 +156,23 @@ namespace ControllerDirectionTest
 			Vector2 position = new Vector2(graphics.GraphicsDevice.Viewport.TitleSafeArea.Left, graphics.GraphicsDevice.Viewport.TitleSafeArea.Top);
 			
 			//say what controller we are checking
-			_text.Write("Controller Index: " + _player.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch);
+			_text.Write("Controller Index: " + _player.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 			position.Y += _text.Font.LineSpacing;
 
 			//is the controller plugged in?
-			_text.Write("Controller Plugged In: " + _controller.ControllerPluggedIn.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch);
+			_text.Write("Controller Plugged In: " + _controller.ControllerPluggedIn.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 			position.Y += _text.Font.LineSpacing;
 
 			//are we using the keyboard?
-			_text.Write("Use Keyboard: " + _controller.UseKeyboard.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch);
+			_text.Write("Use Keyboard: " + _controller.UseKeyboard.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 			position.Y += _text.Font.LineSpacing;
 
 			//say what type of thumbstick scrubbing we are doing
-			_text.Write("Thumbstick type: " + _controller.Thumbsticks.ThumbstickScrubbing.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch);
+			_text.Write("Thumbstick type: " + _controller.Thumbsticks.ThumbstickScrubbing.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 			position.Y += _text.Font.LineSpacing;
 
 			//what direction is the player facing
-			_text.Write("Player is facing: " + (_flipped ? "left" : "right"), position, Justify.Left, 1.0f, Color.White, spriteBatch);
+			_text.Write("Player is facing: " + (_flipped ? "left" : "right"), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 			position.Y += _text.Font.LineSpacing * 2;
 
 			//draw the current state of each keystroke
@@ -184,12 +189,12 @@ namespace ControllerDirectionTest
 
 			//write the dot product of the two thumbsticks
 			_text.Write("dot product: " + Vector2.Dot(Left.ThumbStick.Direction, Right.ThumbStick.Direction).ToString(),
-				position, Justify.Left, 1.0f, Color.White, spriteBatch);
+				position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 			position.Y += _text.Font.LineSpacing * 2;
 
 			//draw the thumbsticks
-			Left.Draw(_text, spriteBatch, graphics.GraphicsDevice);
-			Right.Draw(_text, spriteBatch, graphics.GraphicsDevice);
+			Left.Draw(_text, spriteBatch, graphics.GraphicsDevice, _time);
+			Right.Draw(_text, spriteBatch, graphics.GraphicsDevice, _time);
 
 			spriteBatch.End();
 
@@ -211,13 +216,13 @@ namespace ControllerDirectionTest
 		private void WriteKeyStroke(EKeystroke key, Vector2 position)
 		{
 			//Write the name of the button
-			position.X = _text.Write(key.ToString() + ": ", position, Justify.Left, 1.0f, Color.White, spriteBatch);
+			position.X = _text.Write(key.ToString() + ": ", position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 
 			//is the button currently active
 			//It would be better to store this normalized vector rather than computer it every time!
 			if (_controller.CheckKeystroke(key, _flipped, Vector2.Normalize(Right.ThumbStick.Direction))) 
 			{
-				position.X = _text.Write("held ", position, Justify.Left, 1.0f, Color.White, spriteBatch);
+				position.X = _text.Write("held ", position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
 			}
 		}
 
