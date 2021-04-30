@@ -1,11 +1,9 @@
-using System;
-using HadoukInput;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
 using FontBuddyLib;
-using Microsoft.Xna.Framework.Graphics;
-using BasicPrimitiveBuddy;
 using GameTimer;
+using HadoukInput;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using PrimitiveBuddy;
 
 namespace ControllerDirectionTest
 {
@@ -52,27 +50,28 @@ namespace ControllerDirectionTest
 		public void Draw(FontBuddy text, SpriteBatch mySpriteBatch, GraphicsDevice graphics, GameClock time)
 		{
 			//draw the outline of the thumbstick
-			var thumbstick = new XnaBasicPrimitive(graphics, mySpriteBatch);
+			var thumbstick = new Primitive(graphics, mySpriteBatch);
 			thumbstick.Circle(Position, 100, Color.White);
 
 			//draw the thumbstick
 			Vector2 thumbstickPos = ThumbStick.Direction * 100.0f;
+			thumbstickPos.Y = -1 * thumbstickPos.Y; //thumbsticks are the opposite direction of drawing
 			thumbstick.Circle(Position + thumbstickPos, 10, Color.Blue);
 
 			//write the deadzone type above the thumbstick
 			Vector2 textPos = new Vector2(Position.X, Position.Y - 150.0f);
 			text.Write(ThumbStick.ThumbstickScrubbing.ToString(),
-			           textPos, Justify.Center, 1.0f, Color.White, mySpriteBatch, time);
+					   textPos, Justify.Center, 1.0f, Color.White, mySpriteBatch, time);
 
 			//write the raw output below the thing
 			textPos = new Vector2(Position.X, Position.Y + 100.0f);
 			text.Write("X: " + ThumbStick.Direction.X.ToString(),
-			           textPos, Justify.Center, 1.0f, Color.White, mySpriteBatch, time);
+					   textPos, Justify.Center, 1.0f, Color.White, mySpriteBatch, time);
 
-			textPos.Y += text.Font.MeasureString("X").Y;
+			textPos.Y += text.MeasureString("X").Y;
 
 			text.Write("Y: " + ThumbStick.Direction.Y.ToString(),
-			           textPos, Justify.Center, 1.0f, Color.White, mySpriteBatch, time);
+					   textPos, Justify.Center, 1.0f, Color.White, mySpriteBatch, time);
 		}
 	}
 }

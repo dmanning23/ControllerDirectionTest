@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ControllerDirectionTest.Windows")]
-[assembly: AssemblyProduct("ControllerDirectionTest.Windows")]
+[assembly: AssemblyTitle("InputWrapperSample.WindowsDX")]
+[assembly: AssemblyProduct("InputWrapperSample.WindowsDX")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("Hewlett-Packard")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2013")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4a45ddca-01de-475e-81fe-bf3a0d0be497")]
+[assembly: Guid("d10382a3-daca-4648-9b65-ebe38b3a66a4")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -17,6 +17,8 @@ namespace ControllerDirectionTest
 	{
 		#region Members
 
+		const int lineSpacing = 32;
+
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
@@ -63,7 +65,7 @@ namespace ControllerDirectionTest
 			graphics.PreferredBackBufferHeight = 768;
 			graphics.IsFullScreen = false;
 
-			_controller = new ControllerWrapper(PlayerIndex.One, true);
+			_controller = new ControllerWrapper(0);
 			_ButtonTimer = new CountdownTimer[(int)EKeystroke.RTriggerRelease + 1];
 
 			for (int i = 0; i < ((int)EKeystroke.RTriggerRelease + 1); i++)
@@ -157,40 +159,40 @@ namespace ControllerDirectionTest
 			
 			//say what controller we are checking
 			_text.Write("Controller Index: " + _player.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 
 			//is the controller plugged in?
 			_text.Write("Controller Plugged In: " + _controller.ControllerPluggedIn.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 
 			//are we using the keyboard?
 			_text.Write("Use Keyboard: " + _controller.UseKeyboard.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 
 			//say what type of thumbstick scrubbing we are doing
 			_text.Write("Thumbstick type: " + _controller.Thumbsticks.ThumbstickScrubbing.ToString(), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 
 			//what direction is the player facing
 			_text.Write("Player is facing: " + (_flipped ? "left" : "right"), position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
-			position.Y += _text.Font.LineSpacing * 2;
+			position.Y += lineSpacing * 2;
 
 			//draw the current state of each keystroke
 			WriteKeyStroke(EKeystroke.Up, position);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 			WriteKeyStroke(EKeystroke.Down, position);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 			WriteKeyStroke(EKeystroke.Forward, position);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 			WriteKeyStroke(EKeystroke.Back, position);
-			position.Y += _text.Font.LineSpacing * 2;
+			position.Y += lineSpacing * 2;
 			WriteKeyStroke(EKeystroke.Neutral, position);
-			position.Y += _text.Font.LineSpacing;
+			position.Y += lineSpacing;
 
 			//write the dot product of the two thumbsticks
 			_text.Write("dot product: " + Vector2.Dot(Left.ThumbStick.Direction, Right.ThumbStick.Direction).ToString(),
 				position, Justify.Left, 1.0f, Color.White, spriteBatch, _time);
-			position.Y += _text.Font.LineSpacing * 2;
+			position.Y += lineSpacing * 2;
 
 			//draw the thumbsticks
 			Left.Draw(_text, spriteBatch, graphics.GraphicsDevice, _time);
